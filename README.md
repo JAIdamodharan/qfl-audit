@@ -1,5 +1,9 @@
 # AI Team Intern Assignment — The Audit
 
+**Author:** Jaishree ([@JAIdamodharan](https://github.com/JAIdamodharan))  
+**Repository:** [https://github.com/JAIdamodharan/qfl-audit](https://github.com/JAIdamodharan/qfl-audit)  
+**Desmos Capacity & Goodput Model:** [https://www.desmos.com/calculator/2o6u7ckfmh](https://www.desmos.com/calculator/2o6u7ckfmh)  
+
 This repository contains the complete audit, empirical benchmarks, mathematical derivations, and decision memos for the **AI Team Intern Assignment: The Audit**.
 
 ---
@@ -96,4 +100,5 @@ python3 partB/verify_capacity.py
 ---
 
 ## 📊 Interactive Model
-- **Desmos Capacity & Goodput Model**: Interactive graphs of KV-cache footprint and preemption curves are available at [Desmos Graphing Calculator](https://www.desmos.com/calculator).
+- **Desmos Capacity & Goodput Model**: Interactive graph of KV-cache footprint and preemption curves:  
+  👉 **[https://www.desmos.com/calculator/2o6u7ckfmh](https://www.desmos.com/calculator/2o6u7ckfmh)**
