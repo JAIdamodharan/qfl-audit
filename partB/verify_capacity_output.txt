@@ -1,0 +1,10 @@
+1. KV Cache Bytes per token: 114,688 bytes (112.0 KiB)
+2. Max Concurrent 4096-token Sequences Theoretical: 29.18 (approx 29 seqs)
+
+3. Bench Log Analysis for Prompt 3584 + Gen 512 (Total 4096):
+Batch  4 | Wall:  28.98s | Reported:  565.4 tok/s | Goodput (Wall):  70.7 gen-tok/s | Goodput (ITL):  77.9 gen-tok/s | Preempted:  0 | KV Util: 0.16
+Batch  8 | Wall:  36.30s | Reported:  902.6 tok/s | Goodput (Wall): 112.8 gen-tok/s | Goodput (ITL): 128.5 gen-tok/s | Preempted:  0 | KV Util: 0.31
+Batch 16 | Wall:  49.97s | Reported: 1311.4 tok/s | Goodput (Wall): 163.9 gen-tok/s | Goodput (ITL): 207.3 gen-tok/s | Preempted:  0 | KV Util: 0.62
+Batch 24 | Wall:  61.16s | Reported: 1607.4 tok/s | Goodput (Wall): 200.9 gen-tok/s | Goodput (ITL): 249.8 gen-tok/s | Preempted:  0 | KV Util: 0.93
+Batch 32 | Wall:  94.71s | Reported: 1384.0 tok/s | Goodput (Wall): 173.0 gen-tok/s | Goodput (ITL): 314.4 gen-tok/s | Preempted:  7 | KV Util: 0.97
+Batch 48 | Wall: 151.41s | Reported: 1298.5 tok/s | Goodput (Wall): 162.3 gen-tok/s | Goodput (ITL): 480.0 gen-tok/s | Preempted: 23 | KV Util: 0.97
