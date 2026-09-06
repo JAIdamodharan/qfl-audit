@@ -16,7 +16,7 @@ For an autoregressive Transformer utilizing Grouped Query Attention (GQA), each 
 - Key precision: $\text{fp16}$ ($2\text{ bytes}$)
 - Value precision: $\text{fp16}$ ($2\text{ bytes}$)
 
-$$\text{KV Bytes per Token} = 2 \times L \times H_{kv} \times d_k \times \text{bytes\_per\_element}$$
+$$\text{KV Bytes per Token} = 2 \times L \times H_{kv} \times d_k \times \text{bytes per element}$$
 $$\text{KV Bytes per Token} = 2 \times 28 \times 8 \times 128 \times 2 = \mathbf{114,688 \text{ bytes}}$$
 
 $$\mathbf{114,688 \text{ bytes} = 112.0 \text{ KiB} = 114.688 \text{ KB}}$$
@@ -38,8 +38,8 @@ We determine the memory remaining on the GPU dedicated to the dynamic KV cache p
   $$M_{\text{overhead}} \approx 1.6 \text{ GB} = 1,600,000,000\text{ bytes} \approx \mathbf{1.490 \text{ GiB}}$$
 
 **3. Memory Available for KV Cache Pool:**
-$$M_{\text{KV\_pool}} = M_{\text{allocatable}} - M_{\text{weights}} - M_{\text{overhead}}$$
-$$M_{\text{KV\_pool}} = 23,708,219,474 - 8,400,000,000 - 1,600,000,000 = \mathbf{13,708,219,474 \text{ bytes}} \approx \mathbf{12.767 \text{ GiB}}$$
+$$M_{\text{KV pool}} = M_{\text{allocatable}} - M_{\text{weights}} - M_{\text{overhead}}$$
+$$M_{\text{KV pool}} = 23,708,219,474 - 8,400,000,000 - 1,600,000,000 = \mathbf{13,708,219,474 \text{ bytes}} \approx \mathbf{12.767 \text{ GiB}}$$
 
 **4. KV Cache Requirement per 4096-Token Sequence:**
 $$\text{Memory per Sequence} = 4096 \text{ tokens} \times 114,688 \text{ bytes/token} = 469,762,048 \text{ bytes} = \mathbf{448.0 \text{ MiB} = 0.4375 \text{ GiB}}$$
@@ -101,7 +101,7 @@ The degradation is caused by **KV-Cache Exhaustion and Scheduler Preemption Thra
 
 **The Root Error:** The intern misread `reported_tok_s` as **generation throughput (goodput)**.
 `reported_tok_s` is total harness throughput:
-$$\text{reported\_tok\_s} = \frac{\text{Prompt Tokens} + \text{Generated Tokens}}{\text{Wall Clock Time}}$$
+$$\text{reported tok/s} = \frac{\text{Prompt Tokens} + \text{Generated Tokens}}{\text{Wall Clock Time}}$$
 
 In the long-prompt benchmark ($3584\text{ prompt} + 512\text{ gen} = 4096\text{ tokens}$), **$87.5\%$ of all tokens are prompt prefill tokens**.
 - **Prefill** is compute-bound (matrix multiplications in parallel across 3584 tokens), running at thousands of tokens/second.
@@ -114,14 +114,14 @@ Long prompts inflated `reported_tok_s` solely because 87.5% of the work was pref
 ### Two Independent Derivations of Honest Goodput (Batch 24, Long Prompt)
 
 #### Derivation 1: Total Generated Output Tokens / Wall Clock Time
-$$\text{Total Output Tokens} = \text{Batch Size} \times \text{gen\_len} = 24 \times 512 = 12,288 \text{ tokens}$$
+$$\text{Total Output Tokens} = \text{Batch Size} \times \text{gen len} = 24 \times 512 = 12,288 \text{ tokens}$$
 $$\text{Wall Clock Time} = 61.16 \text{ seconds}$$
 $$\mathbf{\text{Honest Goodput}_{\text{total}} = \frac{12,288 \text{ gen tokens}}{61.16 \text{ s}} = 200.92 \text{ gen-tok/s}}$$
 
 *(If isolating purely the generation phase by subtracting TTFT latency $0.5005\text{s}$: $\text{Goodput}_{\text{decode}} = \frac{12,288}{60.66\text{s}} = \mathbf{202.57\text{ gen-tok/s}}$).*
 
 #### Derivation 2: From Median Inter-Token Latency (`itl_ms_p50`)
-The median inter-token latency during decode is $\text{itl\_ms\_p50} = 96.07\text{ ms} = 0.09607\text{ s}$ per decode step.
+The median inter-token latency during decode is $\text{ITL p50} = 96.07\text{ ms} = 0.09607\text{ s}$ per decode step.
 In each step, 24 tokens are emitted (one per active sequence):
 $$\mathbf{\text{Decode Rate} = \frac{\text{Batch Size}}{\text{ITL (seconds)}} = \frac{24 \text{ tokens}}{0.09607 \text{ s}} = 249.82 \text{ gen-tok/s}}$$
 

@@ -81,7 +81,7 @@ python3 partB/verify_capacity.py
 - **Denominator Insight:** Agglutinative Dravidian languages express a 5-word English phrase in 1–2 compound words. Measuring `tokens/word` artificially inflates perceived cost by $+36\%\text{–}+50\%$. The only valid routing and capacity metric is **Tokens per Parallel Semantic Sentence** (holding user intent constant).
 
 ### Part B: Serving Capacity & Goodput Derivations
-- **Exact KV Cache per Token:** $2 \times 28 \text{ layers} \times 8 \text{ KV heads} \times 128 \text{ head\_dim} \times 2 \text{ bytes} = \mathbf{114,688\text{ bytes}} = \mathbf{112\text{ KiB}}$.
+- **Exact KV Cache per Token:** $2 \times 28 \text{ layers} \times 8 \text{ KV heads} \times 128 \text{ head dim} \times 2 \text{ bytes} = \mathbf{114,688\text{ bytes}} = \mathbf{112\text{ KiB}}$.
 - **Max 4096-Token Sequences on 24GB L4:** $\lfloor 12.77\text{ GiB} / 0.4375\text{ GiB} \rfloor = \mathbf{29\text{ sequences}}$ (empirically $25\text{–}26$ accounting for allocator metadata).
 - **Long-Context Throughput Anomaly:** Saturated at batch 24 (`kv_cache_util` = 0.93). At batch 32 & 48, memory exhaustion triggers **preemption thrashing** ($7$ and $23$ preempted requests), destroying generation throughput.
 - **Goodput vs Harness Throughput:** `reported_tok_s` was inflated because $87.5\%$ of all processed tokens were prompt prefill matrix multiplications.
